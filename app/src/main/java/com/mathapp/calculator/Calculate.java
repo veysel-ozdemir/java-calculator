@@ -3,7 +3,7 @@ package com.mathapp.calculator;
 import java.util.Stack;
 
 public class Calculate {
-    private Stack<Integer> numbers;
+    private Stack<Double> numbers;
     private Stack<Character> operators;
 
     public Calculate() {
@@ -11,14 +11,23 @@ public class Calculate {
         operators = new Stack<>();
     }
 
-    public int evaluate(String input) {
+    public double evaluate(String input) {
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             if (Character.isDigit(c)) {
-                int num = c - '0'; // the difference of their Unicode values will give us the integer value. (The Unicode values of the digits '0' through '9' are consecutive.)
+                double num = c - '0'; // the difference of their Unicode values will give us the integer value. (The Unicode values of the digits '0' through '9' are consecutive.)
                 while (i+1 < input.length() && Character.isDigit(input.charAt(i+1))) { // checking next char whether is a char
                     num = num * 10 + (input.charAt(i+1) - '0'); // e.g. num = 2 * 10 + (3) => num = 23
                     i++;
+                }
+                if(input.charAt(i+1) == '.') { // handling the double value
+                    i++; // index of dot
+                    double fraction = 0.1;
+                    do{ // assume after dot is definitely a number
+                        num = num + fraction*(input.charAt(i+1) - '0');
+                        fraction *= 0.1;
+                        i++;
+                    } while(Character.isDigit(input.charAt(i+1)));
                 }
                 numbers.push(num);
             } else if (c == '+' || c == '-' || c == '*' || c == '/') {
@@ -42,10 +51,10 @@ public class Calculate {
     }
 
     private void performOperation() {
-        int num2 = numbers.pop();
-        int num1 = numbers.pop();
+        double num2 = numbers.pop();
+        double num1 = numbers.pop();
         char op = operators.pop();
-        int result = 0;
+        double result = 0;
         switch(op) {
             case '+': result = num1 + num2; break;
             case '-': result = num1 - num2; break;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private EditText display;
     private Calculate calculate;
+    private String input = "("; // (...operations...)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,118 +20,121 @@ public class MainActivity extends AppCompatActivity {
 
         display = (EditText) findViewById(R.id.editTextEquation);
         calculate = new Calculate();
-
-        // trial
-        String input = "23+1*3-(1-(4/2))";
-        Calculate calculate = new Calculate();
-        System.out.println(calculate.evaluate(input));
     }
 
     public void buttonClick(View view) {
-        int result;
-        String input = display.getText().toString();
+        double result;
+        String show = display.getText().toString();
 
         switch (view.getId()) {
             case R.id.button0:
-                input = input.concat("0");
-                display.setText(input);
+                show = show.concat("0");
+                display.setText(show);
                 break;
             case R.id.button1:
-                input = input.concat("1");
-                display.setText(input);
+                show = show.concat("1");
+                display.setText(show);
                 break;
             case R.id.button2:
-                input = input.concat("2");
-                display.setText(input);
+                show = show.concat("2");
+                display.setText(show);
                 break;
             case R.id.button3:
-                input = input.concat("3");
-                display.setText(input);
+                show = show.concat("3");
+                display.setText(show);
                 break;
             case R.id.button4:
-                input = input.concat("4");
-                display.setText(input);
+                show = show.concat("4");
+                display.setText(show);
                 break;
             case R.id.button5:
-                input = input.concat("5");
-                display.setText(input);
+                show = show.concat("5");
+                display.setText(show);
                 break;
             case R.id.button6:
-                input = input.concat("6");
-                display.setText(input);
+                show = show.concat("6");
+                display.setText(show);
                 break;
             case R.id.button7:
-                input = input.concat("7");
-                display.setText(input);
+                show = show.concat("7");
+                display.setText(show);
                 break;
             case R.id.button8:
-                input = input.concat("8");
-                display.setText(input);
+                show = show.concat("8");
+                display.setText(show);
                 break;
             case R.id.button9:
-                input = input.concat("9");
-                display.setText(input);
+                show = show.concat("9");
+                display.setText(show);
                 break;
             case R.id.buttonAddition:
-                input = input.concat("+");
-                display.setText(input);
+                show = show.concat("+");
+                display.setText(show);
                 break;
             case R.id.buttonSubtraction:
-                input = input.concat("-");
-                display.setText(input);
+                show = show.concat("-");
+                display.setText(show);
                 break;
             case R.id.buttonMultiplication:
-                input = input.concat("*");
-                display.setText(input);
+                show = show.concat("*");
+                display.setText(show);
                 break;
             case R.id.buttonDivision:
-                input = input.concat("/");
-                display.setText(input);
+                show = show.concat("/");
+                display.setText(show);
                 break;
             case R.id.buttonFactorial:
-                input = input.concat("!");
-                display.setText(input);
+                show = show.concat("!");
+                display.setText(show);
                 break;
             case R.id.buttonExponent:
-                input = input.concat("^");
-                display.setText(input);
+                show = show.concat("^");
+                display.setText(show);
                 break;
             case R.id.buttonPercentage:
-                input = input.concat("%(");
-                display.setText(input);
+                show = show.concat("%(");
+                display.setText(show);
                 break;
             case R.id.buttonSquareRoot:
-                input = input.concat("√(");
-                display.setText(input);
+                show = show.concat("√(");
+                display.setText(show);
                 break;
             case R.id.buttonDot:
-                input = input.concat(".");
-                display.setText(input);
+                show = show.concat(".");
+                display.setText(show);
                 break;
             case R.id.buttonOpenParenthesis:
-                input = input.concat("(");
-                display.setText(input);
+                show = show.concat("(");
+                display.setText(show);
                 break;
             case R.id.buttonCloseParenthesis:
-                input = input.concat(")");
-                display.setText(input);
+                show = show.concat(")");
+                display.setText(show);
                 break;
             case R.id.buttonDelete:
-                if(input.length() != 0) {
-                    if(input.length() == 1)
-                        input = "";
+                if(show.length() != 0) {
+                    if(show.length() == 1)
+                        show = "";
                     else
-                        input = input.substring(0, input.length()-1); // substring(inclusive, exclusive)
+                        show = show.substring(0, show.length()-1); // substring(inclusive, exclusive)
                 }
-                display.setText(input);
+                display.setText(show);
                 break;
             case R.id.buttonClear:
-                input = "";
-                display.setText(input);
+                show = "";
+                display.setText(show);
                 break;
             case R.id.buttonEqual:
+                input = input.concat(show).concat(")");
                 result = calculate.evaluate(input);
-                display.setText(Integer.toString(result));
+                if(result % 1 == 0) // no decimal part (integer)
+                {
+                    int cast = (int)result; // cast to integer
+                    display.setText(Integer.toString(cast));
+                }else{
+                    display.setText(Double.toString(result));
+                }
+                input = "("; // be ready for the next operation
                 break;
         }
     }
