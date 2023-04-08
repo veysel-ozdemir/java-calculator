@@ -3,10 +3,10 @@ package com.mathapp.calculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class MainActivity extends AppCompatActivity {
     private EditText display;
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonClick(View view) {
-        double result;
+        BigDecimal result;
         String show = display.getText().toString();
 
         switch (view.getId()) {
@@ -127,12 +127,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.buttonEqual:
                 input = input.concat(show).concat(")");
                 result = calculate.evaluate(input);
-                if(result % 1 == 0) // no decimal part (integer)
+                if(result.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) // if no remainder, then the result has no decimal part (integer)
                 {
-                    int cast = (int)result; // cast to integer
-                    display.setText(Integer.toString(cast));
+                    display.setText(Integer.toString(result.intValue())); // return as integer
                 }else{
-                    display.setText(Double.toString(result));
+                    display.setText(result.toString());
                 }
                 input = "("; // be ready for the next operation
                 break;
