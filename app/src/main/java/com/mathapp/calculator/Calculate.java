@@ -17,11 +17,13 @@ public class Calculate {
             char c = input.charAt(i);
             if (Character.isDigit(c)) {
                 BigDecimal num = new BigDecimal(Character.toString(c));
-                while (i+1 < input.length() && Character.isDigit(input.charAt(i+1))) { // checking next char whether is a char
+
+                while (i+1 < input.length() && Character.isDigit(input.charAt(i+1))) { // checking next char whether is a digit
                     BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
                     num = num.multiply(BigDecimal.TEN).add(nextDigit); // first multiple by 10, then add the next digit
                     i++;
                 }
+
                 if(input.charAt(i+1) == '.') { // handling the double value
                     i++; // index of dot
                     BigDecimal fraction = new BigDecimal("0.1");
@@ -45,7 +47,7 @@ public class Calculate {
 
                 while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
                     BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
-                    negNum = negNum.multiply(BigDecimal.TEN).add(nextDigit); // first multiple by 10, then add the next digit
+                    negNum = negNum.multiply(BigDecimal.TEN).subtract(nextDigit); // first multiple by 10, then subtract the next digit
                     i++;
                 }
 
@@ -54,7 +56,7 @@ public class Calculate {
                     BigDecimal fraction = new BigDecimal("0.1");
                     do{ // assume after dot is definitely a number
                         BigDecimal nxtDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
-                        negNum = negNum.add(nxtDigit.multiply(fraction));
+                        negNum = negNum.subtract(nxtDigit.multiply(fraction));
                         fraction = fraction.multiply(new BigDecimal("0.1"));
                         i++;
                     } while(Character.isDigit(input.charAt(i+1)));
