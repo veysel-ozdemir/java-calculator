@@ -38,6 +38,32 @@ public class Calculate {
                     performOperation();
                 }
                 operators.push(c);
+            } else if (c == '(' && input.charAt(i+1) == '-' && Character.isDigit(input.charAt(i+2))) { // handling negative signed numbers
+                String no = Character.toString(input.charAt(++i)); // bypassed the '(' --> i = index of - sign
+                no = no.concat(Character.toString(input.charAt(++i))); // i = index of the number after - sign
+                BigDecimal negNum = new BigDecimal(no);
+
+                while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
+                    BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                    negNum = negNum.multiply(BigDecimal.TEN).add(nextDigit); // first multiple by 10, then add the next digit
+                    i++;
+                }
+
+                if(input.charAt(i+1) == '.') { //handle the negative double number
+                    i++; // index of dot
+                    BigDecimal fraction = new BigDecimal("0.1");
+                    do{ // assume after dot is definitely a number
+                        BigDecimal nxtDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                        negNum = negNum.add(nxtDigit.multiply(fraction));
+                        fraction = fraction.multiply(new BigDecimal("0.1"));
+                        i++;
+                    } while(Character.isDigit(input.charAt(i+1)));
+                }
+
+                if(input.charAt(i+1) == ')') {
+                    numbers.push(negNum); // the negative number pushed to the stack
+                    i++; // bypass the ')'
+                }
             } else if (c == '(') {
                 operators.push(c);
             } else if (c == ')') {

@@ -127,11 +127,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.buttonEqual:
                 input = input.concat(show).concat(")");
                 result = calculate.evaluate(input);
-                if(result.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) // if no remainder, then the result has no decimal part (integer)
-                {
-                    display.setText(Integer.toString(result.intValue())); // return as integer
-                }else{
-                    display.setText(result.toString());
+                if(result.compareTo(BigDecimal.ZERO) >= 0){ // result is positive or zero
+                    if(result.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) // if no remainder, then the result has no decimal part (integer)
+                    {
+                        display.setText(Integer.toString(result.intValue())); // return as integer
+                    }else{
+                        display.setText(result.toString());
+                    }
+                } else { // result is negative
+                    if(result.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) // if no remainder, then the result has no decimal part (integer)
+                    {
+                        display.setText("(".concat(Integer.toString(result.intValue())).concat(")")); // return as integer
+                    } else {
+                        display.setText("(".concat(result.toString()).concat(")"));
+                    }
                 }
                 input = "("; // be ready for the next operation
                 break;
