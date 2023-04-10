@@ -1,6 +1,9 @@
 package com.mathapp.calculator;
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Stack;
 
 public class Calculate {
@@ -12,6 +15,7 @@ public class Calculate {
         operators = new Stack<>();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU) // required for the sqrt() method
     public BigDecimal evaluate(String input) {
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
@@ -66,7 +70,34 @@ public class Calculate {
                     numbers.push(negNum); // the negative number pushed to the stack
                     i++; // bypass the ')'
                 }
-            } else if (c == '(') {
+            } else if(c == '(' && input.charAt(i+1) == '√' && Character.isDigit(input.charAt(i+2))) { // handling square root of the number
+                i += 2; // bypassed this: (√
+                String no = Character.toString(input.charAt(i)); // i = index of the number after '√'
+                BigDecimal sqrtNum = new BigDecimal(no);
+
+                while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
+                    BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                    sqrtNum = sqrtNum.multiply(BigDecimal.TEN).add(nextDigit); // first multiple by 10, then add the next digit
+                    i++;
+                }
+
+                if(input.charAt(i+1) == '.') { //handle the double number
+                    i++; // index of dot
+                    BigDecimal fraction = new BigDecimal("0.1");
+                    do{ // assume after dot is definitely a number
+                        BigDecimal nxtDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                        sqrtNum = sqrtNum.add(nxtDigit.multiply(fraction));
+                        fraction = fraction.multiply(new BigDecimal("0.1"));
+                        i++;
+                    } while(Character.isDigit(input.charAt(i+1)));
+                }
+
+                if(input.charAt(i+1) == ')') {
+                    sqrtNum = sqrtNum.sqrt(new MathContext(sqrtNum.scale()/2)); // solve the square root
+                    numbers.push(sqrtNum); // the solution pushed to the stack
+                    i++; // bypass the ')'
+                }
+            }else if (c == '(') {
                 operators.push(c);
             } else if (c == ')') {
                 while (operators.peek() != '(') {

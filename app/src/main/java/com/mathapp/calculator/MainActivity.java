@@ -1,12 +1,12 @@
 package com.mathapp.calculator;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class MainActivity extends AppCompatActivity {
     private EditText display;
@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         calculate = new Calculate();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU) // required for the sqrt() method
     public void buttonClick(View view) {
         BigDecimal result;
         String show = display.getText().toString();
@@ -92,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
                 display.setText(show);
                 break;
             case R.id.buttonPercentage:
-                show = show.concat("%(");
+                show = show.concat("%");
                 display.setText(show);
                 break;
             case R.id.buttonSquareRoot:
-                show = show.concat("√(");
+                show = show.concat("√");
                 display.setText(show);
                 break;
             case R.id.buttonDot:
