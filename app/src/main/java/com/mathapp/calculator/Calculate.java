@@ -97,6 +97,64 @@ public class Calculate {
                     numbers.push(sqrtNum); // the solution pushed to the stack
                     i++; // bypass the ')'
                 }
+            } else if(c == '(' && input.charAt(i+1) == '%' && (Character.isDigit(input.charAt(i+2)) || (input.charAt(i+2) == '('))) { // handling the percentage of a number (number: 89 --> %89 = 0.89)
+                BigDecimal pctNum;
+
+                if(Character.isDigit(input.charAt(i+2))) { // positive number
+                    i += 2; // bypassed this: (%
+
+                    String no = Character.toString(input.charAt(i)); // i = index of the number after '%'
+                    pctNum = new BigDecimal(no);
+
+                    while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
+                        BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                        pctNum = pctNum.multiply(BigDecimal.TEN).add(nextDigit); // first multiple by 10, then add the next digit
+                        i++;
+                    }
+
+                    if(input.charAt(i+1) == '.') { //handle the double number
+                        i++; // index of dot
+                        BigDecimal fraction = new BigDecimal("0.1");
+                        do{ // assume after dot is definitely a number
+                            BigDecimal nxtDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                            pctNum = pctNum.add(nxtDigit.multiply(fraction));
+                            fraction = fraction.multiply(new BigDecimal("0.1"));
+                            i++;
+                        } while(Character.isDigit(input.charAt(i+1)));
+                    }
+                } else { // negative number
+                    i += 3; // bypassed this (%(
+
+                    String no = Character.toString(input.charAt(i)); // i = index of the - sign
+                    no = no.concat(Character.toString(input.charAt(++i))); // i = index of the number after - sign
+                    pctNum = new BigDecimal(no);
+
+                    while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
+                        BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                        pctNum = pctNum.multiply(BigDecimal.TEN).subtract(nextDigit); // first multiple by 10, then subtract the next digit
+                        i++;
+                    }
+
+                    if(input.charAt(i+1) == '.') { //handle the negative double number
+                        i++; // index of dot
+                        BigDecimal fraction = new BigDecimal("0.1");
+                        do{ // assume after dot is definitely a number
+                            BigDecimal nxtDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                            pctNum = pctNum.subtract(nxtDigit.multiply(fraction));
+                            fraction = fraction.multiply(new BigDecimal("0.1"));
+                            i++;
+                        } while(Character.isDigit(input.charAt(i+1)));
+                    }
+
+                    if(input.charAt(i+1) == ')')
+                        i++; // bypass the ')'
+                }
+
+                if(input.charAt(i+1) == ')') {
+                    pctNum = pctNum.divide(new BigDecimal("100")); // solve the percentage
+                    numbers.push(pctNum); // the solution pushed to the stack
+                    i++; // bypass the ')'
+                }
             }else if (c == '(') {
                 operators.push(c);
             } else if (c == ')') {
