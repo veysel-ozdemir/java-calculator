@@ -155,7 +155,22 @@ public class Calculate {
                     numbers.push(pctNum); // the solution pushed to the stack
                     i++; // bypass the ')'
                 }
-            }else if (c == '(') {
+            } else if(c == '(' && input.charAt(i+1) == '!' && Character.isDigit(input.charAt(i+2))) { // handling the factorial of a number (number: 5 --> !5 = 120)
+                i += 2; // bypassed this: (!
+                String no = Character.toString(input.charAt(i));
+                BigDecimal factNum = new BigDecimal(no);
+
+                while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
+                    BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
+                    factNum = factNum.multiply(BigDecimal.TEN).add(nextDigit); // first multiple by 10, then add the next digit
+                    i++;
+                }
+
+                if(input.charAt(i+1) == ')') {
+                    numbers.push(factorial(factNum)); // the solution pushed to the stack
+                    i++; // bypass the ')'
+                }
+            } else if (c == '(') {
                 operators.push(c);
             } else if (c == ')') {
                 while (operators.peek() != '(') {
@@ -192,5 +207,12 @@ public class Calculate {
             return false;
         }
         return true;
+    }
+
+    private BigDecimal factorial(BigDecimal num) { // recursive method
+        if(num.equals(BigDecimal.ONE))
+            return BigDecimal.ONE;
+        else
+            return num.multiply(factorial(num.subtract(BigDecimal.ONE)));
     }
 }
