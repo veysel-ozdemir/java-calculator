@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 show = show.concat("!");
                 display.setText(show);
                 break;
-            case R.id.buttonExponent:
-                show = show.concat("^");
+            case R.id.button000:
+                show = show.concat("000");
                 display.setText(show);
                 break;
             case R.id.buttonPercentage:

@@ -46,59 +46,6 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/buttonExponent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:backgroundTint="#FFC107"
-                    android:onClick="buttonClick"
-                    android:text="^"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="30dp" />
-
-                <Button
-                    android:id="@+id/buttonSquareRoot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:backgroundTint="#FFC107"
-                    android:onClick="buttonClick"
-                    android:text="√"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="30dp" />
-
-                <Button
-                    android:id="@+id/buttonFactorial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:backgroundTint="#FFC107"
-                    android:onClick="buttonClick"
-                    android:text="!"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="30dp" />
-
-                <Button
-                    android:id="@+id/buttonPercentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:backgroundTint="#FFC107"
-                    android:onClick="buttonClick"
-                    android:text="%"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="30dp" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
                     android:id="@+id/buttonClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -135,6 +82,63 @@
                     app:cornerRadius="30dp" />
 
                 <Button
+                    android:id="@+id/buttonDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:backgroundTint="#E81313"
+                    android:onClick="buttonClick"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:cornerRadius="30dp"
+                    app:icon="@android:drawable/ic_input_delete"
+                    app:iconGravity="textStart"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/buttonFactorial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:backgroundTint="#FFC107"
+                    android:onClick="buttonClick"
+                    android:text="!"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="30dp" />
+
+                <Button
+                    android:id="@+id/buttonSquareRoot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:backgroundTint="#FFC107"
+                    android:onClick="buttonClick"
+                    android:text="√"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="30dp" />
+
+                <Button
+                    android:id="@+id/buttonPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:backgroundTint="#FFC107"
+                    android:onClick="buttonClick"
+                    android:text="%"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="30dp" />
+
+                <Button
                     android:id="@+id/buttonDivision"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,6 +149,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:cornerRadius="30dp" />
+
             </TableRow>
 
             <TableRow
@@ -311,19 +316,16 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/buttonDelete"
+                    android:id="@+id/button000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
-                    android:backgroundTint="#E81313"
+                    android:backgroundTint="#00BCD4"
                     android:onClick="buttonClick"
+                    android:text="000"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:visibility="visible"
-                    app:cornerRadius="30dp"
-                    app:icon="@android:drawable/ic_input_delete"
-                    app:iconGravity="textStart"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    app:cornerRadius="30dp" />
 
                 <Button
                     android:id="@+id/button0"
