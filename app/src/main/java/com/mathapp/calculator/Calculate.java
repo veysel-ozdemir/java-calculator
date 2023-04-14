@@ -28,7 +28,10 @@ public class Calculate {
                     i++;
                 }
 
-                if(input.charAt(i+1) == '.') { // handling the double value
+                if(input.charAt(i+1) == '!') { // handle factorial of the integer
+                    i++; // index of !
+                    numbers.push(factorial(num));
+                } else if(input.charAt(i+1) == '.') { // handling the double value
                     i++; // index of dot
                     BigDecimal fraction = new BigDecimal("0.1");
                     do{ // assume after dot is definitely a number
@@ -37,16 +40,18 @@ public class Calculate {
                         fraction = fraction.multiply(new BigDecimal("0.1"));
                         i++;
                     } while(Character.isDigit(input.charAt(i+1)));
+                    numbers.push(num);
+                } else {
+                    numbers.push(num);
                 }
-                numbers.push(num);
             } else if (c == '+' || c == '-' || c == '*' || c == '/') {
                 while (!operators.isEmpty() && hasPrecedence(c, operators.peek())) {
                     performOperation();
                 }
                 operators.push(c);
             } else if (c == '(' && input.charAt(i+1) == '-' && Character.isDigit(input.charAt(i+2))) { // handling negative signed numbers
-                String no = Character.toString(input.charAt(++i)); // bypassed the '(' --> i = index of - sign
-                no = no.concat(Character.toString(input.charAt(++i))); // i = index of the number after - sign
+                String no = Character.toString(input.charAt(++i)); // bypassed the '(' --> i: index of - sign
+                no = no.concat(Character.toString(input.charAt(++i))); // i: index of the number after - sign
                 BigDecimal negNum = new BigDecimal(no);
 
                 while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
@@ -70,9 +75,8 @@ public class Calculate {
                     numbers.push(negNum); // the negative number pushed to the stack
                     i++; // bypass the ')'
                 }
-            } else if(c == '(' && input.charAt(i+1) == '√' && Character.isDigit(input.charAt(i+2))) { // handling square root of the number
-                i += 2; // bypassed this: (√
-                String no = Character.toString(input.charAt(i)); // i = index of the number after '√'
+            } else if(c == '√' && Character.isDigit(input.charAt(i+1))) { // handling square root of the number
+                String no = Character.toString(input.charAt(++i)); // i: index of the number after √
                 BigDecimal sqrtNum = new BigDecimal(no);
 
                 while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
@@ -92,18 +96,13 @@ public class Calculate {
                     } while(Character.isDigit(input.charAt(i+1)));
                 }
 
-                if(input.charAt(i+1) == ')') {
-                    sqrtNum = sqrtNum.sqrt(new MathContext(sqrtNum.scale()/2)); // solve the square root
-                    numbers.push(sqrtNum); // the solution pushed to the stack
-                    i++; // bypass the ')'
-                }
-            } else if(c == '(' && input.charAt(i+1) == '%' && (Character.isDigit(input.charAt(i+2)) || (input.charAt(i+2) == '('))) { // handling the percentage of a number (number: 89 --> %89 = 0.89)
+                sqrtNum = sqrtNum.sqrt(new MathContext(sqrtNum.scale()/2)); // solve the square root
+                numbers.push(sqrtNum); // the solution pushed to the stack
+            } else if(c == '%' && (Character.isDigit(input.charAt(i+1)) || (input.charAt(i+1) == '(' && input.charAt(i+2) == '-'))) { // handling the percentage of a number (number: 89 --> %89 = 0.89)
                 BigDecimal pctNum;
 
-                if(Character.isDigit(input.charAt(i+2))) { // positive number
-                    i += 2; // bypassed this: (%
-
-                    String no = Character.toString(input.charAt(i)); // i = index of the number after '%'
+                if(Character.isDigit(input.charAt(i+1))) { // positive number
+                    String no = Character.toString(input.charAt(++i)); // i: index of the number after '%'
                     pctNum = new BigDecimal(no);
 
                     while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
@@ -123,10 +122,10 @@ public class Calculate {
                         } while(Character.isDigit(input.charAt(i+1)));
                     }
                 } else { // negative number
-                    i += 3; // bypassed this (%(
+                    i += 2; // i: index of the - sign
 
-                    String no = Character.toString(input.charAt(i)); // i = index of the - sign
-                    no = no.concat(Character.toString(input.charAt(++i))); // i = index of the number after - sign
+                    String no = Character.toString(input.charAt(i));
+                    no = no.concat(Character.toString(input.charAt(++i))); // i: index of the number after - sign
                     pctNum = new BigDecimal(no);
 
                     while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
@@ -150,26 +149,8 @@ public class Calculate {
                         i++; // bypass the ')'
                 }
 
-                if(input.charAt(i+1) == ')') {
-                    pctNum = pctNum.divide(new BigDecimal("100")); // solve the percentage
-                    numbers.push(pctNum); // the solution pushed to the stack
-                    i++; // bypass the ')'
-                }
-            } else if(c == '(' && input.charAt(i+1) == '!' && Character.isDigit(input.charAt(i+2))) { // handling the factorial of a number (number: 5 --> !5 = 120)
-                i += 2; // bypassed this: (!
-                String no = Character.toString(input.charAt(i));
-                BigDecimal factNum = new BigDecimal(no);
-
-                while(i+1 < input.length() && Character.isDigit(input.charAt(i+1))) {
-                    BigDecimal nextDigit = new BigDecimal(Character.toString(input.charAt(i+1)));
-                    factNum = factNum.multiply(BigDecimal.TEN).add(nextDigit); // first multiple by 10, then add the next digit
-                    i++;
-                }
-
-                if(input.charAt(i+1) == ')') {
-                    numbers.push(factorial(factNum)); // the solution pushed to the stack
-                    i++; // bypass the ')'
-                }
+                pctNum = pctNum.divide(new BigDecimal("100")); // solve the percentage
+                numbers.push(pctNum); // the solution pushed to the stack
             } else if (c == '(') {
                 operators.push(c);
             } else if (c == ')') {
